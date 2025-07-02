@@ -50,7 +50,7 @@ SET default_table_access_method = heap;
 CREATE TABLE public.galaxy (
     galaxy_id integer NOT NULL,
     name character varying(30),
-    distance numeric(5,1),
+    no_of_stars numeric(5,1),
     description text,
     has_life boolean
 );
@@ -184,34 +184,11 @@ CREATE TABLE public.star (
     star_id integer NOT NULL,
     name character varying(30),
     distance numeric(5,1),
-    description text,
-    galaxy_id integer NOT NULL
+    description text
 );
 
 
 ALTER TABLE public.star OWNER TO freecodecamp;
-
---
--- Name: star_galaxy_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
---
-
-CREATE SEQUENCE public.star_galaxy_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.star_galaxy_id_seq OWNER TO freecodecamp;
-
---
--- Name: star_galaxy_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: freecodecamp
---
-
-ALTER SEQUENCE public.star_galaxy_id_seq OWNED BY public.star.galaxy_id;
-
 
 --
 -- Name: star_star_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
@@ -271,22 +248,41 @@ ALTER TABLE ONLY public.star ALTER COLUMN star_id SET DEFAULT nextval('public.st
 
 
 --
--- Name: star galaxy_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
---
-
-ALTER TABLE ONLY public.star ALTER COLUMN galaxy_id SET DEFAULT nextval('public.star_galaxy_id_seq'::regclass);
-
-
---
 -- Data for Name: galaxy; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
+INSERT INTO public.galaxy VALUES (1, 'THe milky way', 100.0, 'Home galaxy', true);
+INSERT INTO public.galaxy VALUES (2, 'Andromeda', 1000.0, 'Closest glaxay', false);
+INSERT INTO public.galaxy VALUES (3, 'Triangulum', 300.0, 'Third largest in local group', false);
+INSERT INTO public.galaxy VALUES (4, 'Messier87', 300.0, 'Giant elliptical galaxy in virgo cluster', false);
+INSERT INTO public.galaxy VALUES (5, 'Whirlpool', 500.0, 'well-defined spiral arms', false);
+INSERT INTO public.galaxy VALUES (6, 'Sombrero', 600.0, 'Bright nucleus and dusty rings', false);
 
 
 --
 -- Data for Name: moon; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
+INSERT INTO public.moon VALUES (1, 'Ganymede', 5.2, 'largest moon', 5);
+INSERT INTO public.moon VALUES (2, 'Titan', 9.5, 'dense atmosphere', 6);
+INSERT INTO public.moon VALUES (3, 'Callisto', 5.2, 'heavily cratered', 5);
+INSERT INTO public.moon VALUES (4, 'Io', 5.2, 'volcanically active', 5);
+INSERT INTO public.moon VALUES (5, 'Europa', 5.2, 'icy surface', 5);
+INSERT INTO public.moon VALUES (6, 'Triton', 30.1, 'retrograde orbit', 7);
+INSERT INTO public.moon VALUES (7, 'Rhea', 9.5, 'icy cratered', 6);
+INSERT INTO public.moon VALUES (8, 'Iapetus', 9.5, 'two-tone', 6);
+INSERT INTO public.moon VALUES (9, 'Dione', 9.5, 'bright spots', 6);
+INSERT INTO public.moon VALUES (10, 'Enceladus', 9.5, 'geysers active', 6);
+INSERT INTO public.moon VALUES (11, 'Miranda', 19.2, 'fractured surface', 8);
+INSERT INTO public.moon VALUES (12, 'Ariel', 19.2, 'ice cliffs', 8);
+INSERT INTO public.moon VALUES (13, 'Umbriel', 19.2, 'dark cratered', 8);
+INSERT INTO public.moon VALUES (14, 'Titania', 19.2, 'largest uranus', 8);
+INSERT INTO public.moon VALUES (15, 'Oberon', 19.2, 'cratered ice', 8);
+INSERT INTO public.moon VALUES (16, 'Charon', 39.5, 'pluto companion', 9);
+INSERT INTO public.moon VALUES (17, 'Proteus', 39.5, 'irregular shape', 9);
+INSERT INTO public.moon VALUES (18, 'Nereid', 30.1, 'eccentric orbit', 7);
+INSERT INTO public.moon VALUES (19, 'Phoebe', 9.5, 'retrograde orbit', 6);
+INSERT INTO public.moon VALUES (20, 'Hyperion', 9.5, 'tumbling moon', 6);
 
 
 --
@@ -311,27 +307,33 @@ INSERT INTO public.planet VALUES (12, 'ProximaCentauriB', 2500.0, 'Nearest possi
 -- Data for Name: star; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
+INSERT INTO public.star VALUES (1, 'Sun', 1.0, 'forms solar system');
+INSERT INTO public.star VALUES (2, 'Sirisus', 5.0, 'brightest star in night sky');
+INSERT INTO public.star VALUES (3, 'Betelgeuse', 6.5, 'massive red supergiant');
+INSERT INTO public.star VALUES (4, 'ProximaCentauri', 4.5, 'Nearest Star');
+INSERT INTO public.star VALUES (5, 'Polaris', 7.6, 'The north star');
+INSERT INTO public.star VALUES (6, 'Veg', 74.6, 'Bright star in Lyra constellation');
 
 
 --
 -- Name: galaxy_galaxy_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.galaxy_galaxy_id_seq', 1, false);
+SELECT pg_catalog.setval('public.galaxy_galaxy_id_seq', 6, true);
 
 
 --
 -- Name: moon_moon_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.moon_moon_id_seq', 1, false);
+SELECT pg_catalog.setval('public.moon_moon_id_seq', 20, true);
 
 
 --
 -- Name: moon_planet_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.moon_planet_id_seq', 1, false);
+SELECT pg_catalog.setval('public.moon_planet_id_seq', 1, true);
 
 
 --
@@ -342,17 +344,10 @@ SELECT pg_catalog.setval('public.planet_planet_id_seq', 12, true);
 
 
 --
--- Name: star_galaxy_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
---
-
-SELECT pg_catalog.setval('public.star_galaxy_id_seq', 1, false);
-
-
---
 -- Name: star_star_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.star_star_id_seq', 1, false);
+SELECT pg_catalog.setval('public.star_star_id_seq', 6, true);
 
 
 --
@@ -388,14 +383,6 @@ ALTER TABLE ONLY public.moon
 
 
 --
--- Name: moon moon_planet_id_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
---
-
-ALTER TABLE ONLY public.moon
-    ADD CONSTRAINT moon_planet_id_key UNIQUE (planet_id);
-
-
---
 -- Name: planet planet_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
@@ -409,14 +396,6 @@ ALTER TABLE ONLY public.planet
 
 ALTER TABLE ONLY public.planet
     ADD CONSTRAINT planet_planet_id_key UNIQUE (planet_id);
-
-
---
--- Name: star star_galaxy_id_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
---
-
-ALTER TABLE ONLY public.star
-    ADD CONSTRAINT star_galaxy_id_key UNIQUE (galaxy_id);
 
 
 --
@@ -441,14 +420,6 @@ ALTER TABLE ONLY public.star
 
 ALTER TABLE ONLY public.moon
     ADD CONSTRAINT moon_planet_id_fkey FOREIGN KEY (planet_id) REFERENCES public.planet(planet_id);
-
-
---
--- Name: star star_galaxy_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
---
-
-ALTER TABLE ONLY public.star
-    ADD CONSTRAINT star_galaxy_id_fkey FOREIGN KEY (galaxy_id) REFERENCES public.galaxy(galaxy_id);
 
 
 --
