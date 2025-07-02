@@ -148,7 +148,8 @@ CREATE TABLE public.planet (
     name character varying(30),
     distance numeric(5,1),
     description text,
-    has_life boolean
+    has_life boolean,
+    star_id integer
 );
 
 
@@ -184,7 +185,8 @@ CREATE TABLE public.star (
     star_id integer NOT NULL,
     name character varying(30),
     distance numeric(5,1),
-    description text
+    description text,
+    galaxy_id integer
 );
 
 
@@ -289,30 +291,30 @@ INSERT INTO public.moon VALUES (20, 'Hyperion', 9.5, 'tumbling moon', 6);
 -- Data for Name: planet; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.planet VALUES (1, 'mercury', 0.8, 'smallest planet in solar system', false);
-INSERT INTO public.planet VALUES (2, 'venus', 0.5, 'hottest planet in solar system', false);
-INSERT INTO public.planet VALUES (3, 'Earth', 0.0, 'Green Planet', true);
-INSERT INTO public.planet VALUES (4, 'Mars', 0.6, 'The red planet', false);
-INSERT INTO public.planet VALUES (5, 'Jupiter', 1.2, 'Largest planet', false);
-INSERT INTO public.planet VALUES (6, 'Saturn', 1.9, 'Planet with rings', false);
-INSERT INTO public.planet VALUES (7, 'Uranus', 2.5, 'Flipped axis', false);
-INSERT INTO public.planet VALUES (8, 'Neptune', 3.1, 'Outermost planet', false);
-INSERT INTO public.planet VALUES (9, 'Pluto', 3.7, 'Dwarf planet', false);
-INSERT INTO public.planet VALUES (10, 'Ceres', 4.1, 'kuiper belt planet', false);
-INSERT INTO public.planet VALUES (11, 'Kepler-452b', 345.0, 'lies in Earth like habitable zone', false);
-INSERT INTO public.planet VALUES (12, 'ProximaCentauriB', 2500.0, 'Nearest possible habitable planet', true);
+INSERT INTO public.planet VALUES (1, 'mercury', 0.8, 'smallest planet in solar system', false, 1);
+INSERT INTO public.planet VALUES (2, 'venus', 0.5, 'hottest planet in solar system', false, 1);
+INSERT INTO public.planet VALUES (3, 'Earth', 0.0, 'Green Planet', true, 1);
+INSERT INTO public.planet VALUES (4, 'Mars', 0.6, 'The red planet', false, 1);
+INSERT INTO public.planet VALUES (5, 'Jupiter', 1.2, 'Largest planet', false, 1);
+INSERT INTO public.planet VALUES (6, 'Saturn', 1.9, 'Planet with rings', false, 1);
+INSERT INTO public.planet VALUES (7, 'Uranus', 2.5, 'Flipped axis', false, 1);
+INSERT INTO public.planet VALUES (8, 'Neptune', 3.1, 'Outermost planet', false, 1);
+INSERT INTO public.planet VALUES (9, 'Pluto', 3.7, 'Dwarf planet', false, 1);
+INSERT INTO public.planet VALUES (10, 'Ceres', 4.1, 'kuiper belt planet', false, 1);
+INSERT INTO public.planet VALUES (11, 'Kepler-452b', 345.0, 'lies in Earth like habitable zone', false, 3);
+INSERT INTO public.planet VALUES (12, 'ProximaCentauriB', 2500.0, 'Nearest possible habitable planet', true, 4);
 
 
 --
 -- Data for Name: star; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.star VALUES (1, 'Sun', 1.0, 'forms solar system');
-INSERT INTO public.star VALUES (2, 'Sirisus', 5.0, 'brightest star in night sky');
-INSERT INTO public.star VALUES (3, 'Betelgeuse', 6.5, 'massive red supergiant');
-INSERT INTO public.star VALUES (4, 'ProximaCentauri', 4.5, 'Nearest Star');
-INSERT INTO public.star VALUES (5, 'Polaris', 7.6, 'The north star');
-INSERT INTO public.star VALUES (6, 'Veg', 74.6, 'Bright star in Lyra constellation');
+INSERT INTO public.star VALUES (1, 'Sun', 1.0, 'forms solar system', 1);
+INSERT INTO public.star VALUES (2, 'Sirisus', 5.0, 'brightest star in night sky', 1);
+INSERT INTO public.star VALUES (3, 'Betelgeuse', 6.5, 'massive red supergiant', 2);
+INSERT INTO public.star VALUES (4, 'ProximaCentauri', 4.5, 'Nearest Star', 5);
+INSERT INTO public.star VALUES (5, 'Polaris', 7.6, 'The north star', 4);
+INSERT INTO public.star VALUES (6, 'Veg', 74.6, 'Bright star in Lyra constellation', 5);
 
 
 --
@@ -340,7 +342,7 @@ SELECT pg_catalog.setval('public.moon_planet_id_seq', 1, true);
 -- Name: planet_planet_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.planet_planet_id_seq', 12, true);
+SELECT pg_catalog.setval('public.planet_planet_id_seq', 26, true);
 
 
 --
@@ -420,6 +422,22 @@ ALTER TABLE ONLY public.star
 
 ALTER TABLE ONLY public.moon
     ADD CONSTRAINT moon_planet_id_fkey FOREIGN KEY (planet_id) REFERENCES public.planet(planet_id);
+
+
+--
+-- Name: planet planet_star_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.planet
+    ADD CONSTRAINT planet_star_id_fkey FOREIGN KEY (star_id) REFERENCES public.star(star_id);
+
+
+--
+-- Name: star star_galaxy_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.star
+    ADD CONSTRAINT star_galaxy_id_fkey FOREIGN KEY (galaxy_id) REFERENCES public.galaxy(galaxy_id);
 
 
 --
